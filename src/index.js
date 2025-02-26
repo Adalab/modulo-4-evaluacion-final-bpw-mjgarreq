@@ -28,8 +28,26 @@ async function getDBconnection() {
   return connection;
 };
 
-
 const PORT = 5005;
 server.listen(PORT, () => {
   console.log(`Server is running http://localhost:${PORT}`);
 });
+
+//endpoint listar entradas existentes
+server.get("/travel", async(req, res) => {
+  try {
+    const connection = await getDBconnection();
+    const selectTravel = "SELECT * from travel";
+    const [results] = await connection.query(selectTravel);
+    connection.end();
+    res.status(200).json({
+      success: true,
+      results: results
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error,
+    })
+  }
+})
