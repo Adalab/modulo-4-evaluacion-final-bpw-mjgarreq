@@ -15,7 +15,7 @@ document.querySelector('.js-btn-login').addEventListener('click', () => {
     };
     
 
-    fetch('http://localhost:5005/login', {
+    fetch(`${process.env.URL_SERVER}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ document.querySelector('.js-btn-login').addEventListener('click', () => {
 document.querySelector('.js-btn-travel').addEventListener('click', () => {
     const travelResult = document.querySelector('.js-travel-result');
 
-    fetch('http://localhost:5005/travel', {
+    fetch(`${process.env.URL_SERVER}/travel`, {
         method: 'GET',
     })
     .then(response => response.json())
