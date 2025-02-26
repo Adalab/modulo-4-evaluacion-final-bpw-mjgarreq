@@ -56,9 +56,10 @@ server.get("/travel", async(req, res) => {
 server.post("/travel", async(req, res) => {
   try {
     const connection = await getDBconnection();
-    const {title, descript, fk_city, fk_country} = req.body;
+    const { title, descript, fk_city, fk_country } = req.body;
     const insertTravel = "INSERT INTO travel (title, descript, fk_city, fk_country) VALUES (?, ?, ?, ?)"
     const [results] = await connection.query(insertTravel, [title, descript, fk_city, fk_country]);
+    connection.end();
 
     if (results) {
       res.status(201).json({
@@ -78,4 +79,35 @@ server.post("/travel", async(req, res) => {
       message: error,
     })
   }
-})
+});
+
+//endpoint actualizar un viaje existente (título y descripción)
+server.put("/travel/:id", async(req, res) => {
+
+  try {
+    const connection = await getDBconnection();
+    const { id } = req.params;
+    const { title, descript } = req.body;
+    const updateTravel = "UPDATE travel SET title = ?, descript = ? WHERE id_travel = ?";
+    const [result] = await connection.query(updateTravel, [title, descript, id]);
+    connection.end();
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({
+        success: true,
+        message: "Viaje actualizado."
+      })
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Ha ocurrido un error"
+      })
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+});
