@@ -144,7 +144,7 @@ server.post("/register", async (req, res) => {
   try {
     const connection = await getDBconnection();
     const { email, user, pass} = req.body;
-    const selectEmail = "SELECT nombre FROM usuarios WHERE email = ?";
+    const selectEmail = "SELECT email FROM usuarios WHERE email = ?";
     const [result] = await connection.query(selectEmail, [email]);
 
     if (result.length === 0) {
@@ -153,12 +153,13 @@ server.post("/register", async (req, res) => {
       const [resultUser] = await connection.query(insertUser, [email, user, passHashed]);
       res.status(201).json({
         success: true,
-        id: resultUser.insertId
+        id: resultUser.insertId,
+        token: passHashed,
       })
     } else {
       res.status(200).json({
         success: false,
-        message: "Usuario ya existente."
+        message: "Usuario ya existente.",
       })
     }
   } catch (error) {
@@ -169,3 +170,41 @@ server.post("/register", async (req, res) => {
   }
 });
 
+//endpoint inicio sesion
+server.post("/login", async(req, res) => {
+
+  try {
+    const connection = await getDBconnection();
+  const { email, pass } = req.body;
+  const selectEmail = "SELECT * FROM usuarios WHERE email = ?";
+  const [result] = await connection.query(selectEmail, [email]);
+  if (result.length !== 0) {
+    const passwordDB = result[0].password;
+    const isSamePassword = await bcrypt.compare(pass, passwordDB);
+
+    if (isSamePassword) {
+      const infoToken = {email: result[0].email, id: result[0].id}
+      const token = jwt.sign(infoToken, "secret_key", {expiresIn: "1h"});
+      res.status(200).json({
+        success: true,
+        token: token,
+      })
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "Contraseña incorrecta"
+        })
+      }
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Email incorrecto."
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+});
