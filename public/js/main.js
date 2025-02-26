@@ -1,6 +1,6 @@
 'use strict';
 
-
+let URL_SERVER = "https://modulo-4-evaluacion-final-bpw-mjgarreq.onrender.com"
 
 let api_token = "";
 
@@ -15,7 +15,7 @@ document.querySelector('.js-btn-login').addEventListener('click', () => {
     };
     
 
-    fetch(`${process.env.URL_SERVER}/login`, {
+    fetch(`${URL_SERVER}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ document.querySelector('.js-btn-login').addEventListener('click', () => {
 document.querySelector('.js-btn-travel').addEventListener('click', () => {
     const travelResult = document.querySelector('.js-travel-result');
 
-    fetch(`${process.env.URL_SERVER}/travel`, {
+    fetch(`${URL_SERVER}/travel`, {
         method: 'GET',
     })
     .then(response => response.json())
