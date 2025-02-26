@@ -137,3 +137,35 @@ server.delete("/travel/:id", async (req, res) => {
     })
   }
 });
+
+
+//endpoint para registrar usuario
+server.post("/register", async (req, res) => {
+  try {
+    const connection = await getDBconnection();
+    const { email, user, pass} = req.body;
+    const selectEmail = "SELECT nombre FROM usuarios WHERE email = ?";
+    const [result] = await connection.query(selectEmail, [email]);
+
+    if (result.length === 0) {
+      const passHashed = await bcrypt.hash(pass, 10);
+      const insertUser = "INSERT INTO usuarios (email, nombre,  password) VALUES (?, ?, ?)";
+      const [resultUser] = await connection.query(insertUser, [email, user, passHashed]);
+      res.status(201).json({
+        success: true,
+        id: resultUser.insertId
+      })
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "Usuario ya existente."
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+});
+
