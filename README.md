@@ -8,14 +8,14 @@ El modelo de datos contiene las siguientes tablas:
 1. Countries (Países): Información sobre los países.
 2. Cities (Ciudades): Información sobre las ciudades, que pertenecen a un país.
 3. Travel (Viajes): Información sobre los viajes disponibles, que están relacionados con las ciudades y países.
-4. Users (Usuarios): Información sobre los usuarios, necesaria para la autenticación y registro de nuevos usuarios.
+4. Usuarios: Información sobre los usuarios, necesaria para la autenticación y registro de nuevos usuarios.
 
 ### Relaciones entre las Tablas:
 
 - Countries - Cities: Relación de uno a muchos (1:n), un país tiene muchas ciudades.
 - Cities - Travel: Relación de uno a muchos (1:n), una ciudad tiene muchos viajes.
 - Countries - Travel: Relación de uno a muchos (1:n), un país tiene muchos viajes.
-- Users - Travel: Los usuarios pueden interactuar con los registros de viajes, pero no existe una relación directa en la base de datos.
+- Usuarios - Travel: Los usuarios pueden interactuar con los registros de viajes, pero no existe una relación directa en la base de datos.
 
 ## Funcionalidades
 
@@ -28,7 +28,7 @@ Obtiene todos los viajes registrados.
 2. POST /travel
 Añade un nuevo viaje a la base de datos.
 
-3. PUT /travel/{id}
+3. PUT /travel/:id
 Modifica un viaje existente.
 
 4. DELETE /travel/:id
@@ -42,7 +42,7 @@ He implementado autenticación de usuarios mediante JSON Web Tokens (JWT). Los u
 Permite registrar un nuevo usuario en la plataforma.
 
 2. POST /login
-Permite a los usuarios existentes iniciar sesión, devolviendo un token JWT que debe ser utilizado en las solicitudes subsecuentes.
+Permite a los usuarios existentes iniciar sesión, devolviendo un token JWT que debe ser utilizado en las solicitud de información de la tabla Usuarios.
 
 ##### Middleware de Autenticación
 Se ha implementado un middleware para verificar el JWT en las solicitudes que requieren autenticación. El token se debe incluir en los encabezados Authorization de la solicitud como tipo Bearer.
@@ -64,7 +64,7 @@ PORT_DB= nombre_puerto
 
 - Node.js / Express para el desarrollo del servidor.
 - JSON Web Tokens (JWT) para la autenticación de usuarios.
-- MySQL para la base de datos (según lo que uses).
+- MySQL para la base de datos.
 - dotenv para la creación y uso de variables de entorno.
 
 ## Despliegue
