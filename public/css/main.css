@@ -1,0 +1,37 @@
+body {
+    margin: 40px;
+    text-align: center;
+}
+.login {
+    line-height: 3;
+    max-width: 400px;
+}
+
+.div-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 3px solid rgb(227, 208, 208);
+    padding: 20px;
+    align-items: center;
+}
+
+.btn {
+    width: fit-content;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: rgb(157, 157, 222);
+    margin-top: 20px;
+}
+
+.label {
+    margin-top: 15px;
+    font-size: 18px;
+    color: rgb(228, 171, 100);
+}
+
+.title {
+    font-size: 25px;
+    background-color: aliceblue;
+    color: rgb(101, 101, 185);
+}

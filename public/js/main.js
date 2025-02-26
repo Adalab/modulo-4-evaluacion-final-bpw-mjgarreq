@@ -28,10 +28,9 @@ document.querySelector('.js-btn-login').addEventListener('click', () => {
       console.log(responseData);
       if (responseData.success) {
         text.innerHTML= "Inicio de sesión correcto"
-        printJson('.js-login-result', responseData);
       } else {
         text.innerHTML= "NO ha podido iniciar sesión"
-        printJson('.js-login-result', responseData);
+        printJson('.js-login-result', responseData.message);
       }
       
     });
