@@ -111,3 +111,29 @@ server.put("/travel/:id", async(req, res) => {
     })
   }
 });
+
+//endpoint eliminar una viaje
+server.delete("/travel/:id", async (req, res) => {
+  try {
+    const connection = await getDBconnection();
+    const { id } = req.params;
+    const deleteTravel = "DELETE FROM travel WHERE id_travel = ?";
+    const [result] = await connection.query(deleteTravel, [id]);
+    if (result.affectedRows > 0) {
+      res.status(200).json({
+        success: true,
+        message: "Viaje eliminado."
+      })
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Ha ocurrido un error al intentar eliminar un viaje."
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+});
