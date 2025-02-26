@@ -47,7 +47,35 @@ server.get("/travel", async(req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error,
+      message: error,
+    })
+  }
+});
+
+//endpoint insertar una entrada en travel
+server.post("/travel", async(req, res) => {
+  try {
+    const connection = await getDBconnection();
+    const {title, descript, fk_city, fk_country} = req.body;
+    const insertTravel = "INSERT INTO travel (title, descript, fk_city, fk_country) VALUES (?, ?, ?, ?)"
+    const [results] = await connection.query(insertTravel, [title, descript, fk_city, fk_country]);
+
+    if (results) {
+      res.status(201).json({
+        success: true,
+        id: results.insertId,
+        result: results,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "El viaje no se ha insertado."
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error,
     })
   }
 })
