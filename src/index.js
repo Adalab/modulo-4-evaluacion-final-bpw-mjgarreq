@@ -241,3 +241,7 @@ server.get("/users", authorization, async(req, res) => {
   })
 
 });
+
+//static server
+const staticServerPath = "./public";
+server.use(express.static(staticServerPath))
